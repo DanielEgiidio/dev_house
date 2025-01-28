@@ -1,0 +1,12 @@
+# Dependências do Node.js
+node_modules/
+
+# Logs
+*.log
+
+# Arquivos de ambiente
+.env
+
+# Diretórios de saída
+dist/
+build/
