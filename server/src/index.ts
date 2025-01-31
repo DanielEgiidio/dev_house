@@ -8,6 +8,8 @@ import * as dynamoose from "dynamoose";
 
 /* ROUTES IMPORT */
 
+import courseRoutes from "./routes/courseRoutes";
+
 /* CONFIG */
 
 dotenv.config();
@@ -32,6 +34,8 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use("/courses", courseRoutes);
 
 /* SERVER */
 
