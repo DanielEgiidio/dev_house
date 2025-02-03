@@ -27,19 +27,19 @@ const NonDashBoardNavbar = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="nondashboard-navbar__actions">
-        <button className="nondashboard-navbar__notification-button">
-          <span className="nondashboard-navbar__notification-indicator"></span>
-          <Bell className="nondashboard-navbar__notification-icon" />
-        </button>
+        <div className="nondashboard-navbar__actions">
+          <button className="nondashboard-navbar__notification-button">
+            <span className="nondashboard-navbar__notification-indicator"></span>
+            <Bell className="nondashboard-navbar__notification-icon" />
+          </button>
 
-        {/* <button className="nondashboard-navbar__auth-button--login">
+          {/* <button className="nondashboard-navbar__auth-button--login">
           Login
         </button>
         <button className="nondashboard-navbar__auth-button--signup">
           Sign Up
         </button> */}
+        </div>
       </div>
     </nav>
   );
