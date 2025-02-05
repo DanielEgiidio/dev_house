@@ -48,7 +48,6 @@ const Landing = () => {
   const currentImage = useCarousel({ totalImages: 3 });
 
   const { data: courses, isLoading, isError } = useGetCoursesQuery({});
-  console.log("courses: ", courses);
 
   const handleCourseClick = (courseId: string) => {
     router.push(`/search?id=${courseId}`);
@@ -104,7 +103,7 @@ const Landing = () => {
         viewport={{ amount: 0.3, once: true }}
         className="landing__featured"
       >
-        <h2 className="landing__featured--title"> Cursos em destaque</h2>
+        <h2 className="landing__featured-title"> Cursos em destaque</h2>
         <p className="landing__featured-description">
           Do iniciante ao avançado, em todos os setores, temos os cursos certos
           apenas para você e preparamos toda a sua jornada para aprender e

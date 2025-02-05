@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,6 +17,7 @@ body,
   @apply text-sm;
   @apply text-gray-300;
   @apply bg-customgreys-primarybg;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 :root {

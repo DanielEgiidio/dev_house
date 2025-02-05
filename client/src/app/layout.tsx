@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { ClerkProvider } from "@clerk/nextjs";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-dm-sans",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -21,12 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${dmSans.variable} antialiased`}>
-        <div className="root-layout">
-          <Providers>{children}</Providers>
-        </div>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${inter.variable} antialiased`}>
+          <div className="root-layout">
+            <Providers>{children}</Providers>
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
