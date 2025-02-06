@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { FetchArgs, BaseQueryApi } from "@reduxjs/toolkit/query";
 import { User } from "@clerk/nextjs/server";
+import { Clerk } from "@clerk/clerk-js";
+import { toast } from "sonner";
 
 const customBaseQuery = async (
   args: string | FetchArgs,
@@ -10,8 +12,12 @@ const customBaseQuery = async (
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     // Adicione headers se necessário
-    prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
+    prepareHeaders: async (headers) => {
+      const token = await window.Clerk?.session?.getToken();
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+
       return headers;
     },
   });
@@ -20,13 +26,39 @@ const customBaseQuery = async (
     const result = await baseQuery(args, api, extraOptions);
 
     if (result.error) {
-      return { error: result.error };
+      const errorData = result.error?.data;
+      const errorMessage =
+        (errorData && typeof errorData === "object" && "message" in errorData
+          ? errorData.message
+          : undefined) ||
+        result.error?.status?.toString() ||
+        "Um erro ocorreu durante a requisição";
+
+      toast.error(`Error: ${errorMessage}`);
     }
 
-    if (result.data) {
-      return {
-        data: result.data || result.data,
-      };
+    const isMutationRequest =
+      (args as FetchArgs).method && (args as FetchArgs).method !== "GET";
+
+    if (
+      isMutationRequest &&
+      result.data &&
+      typeof result.data === "object" &&
+      "message" in result.data
+    ) {
+      toast.success("Atualização realizada com sucesso ");
+    }
+
+    if (result && typeof result === "object" && "data" in result) {
+      const responseData = result.data as { data?: any } | undefined;
+      if (responseData?.data) {
+        result.data = responseData.data;
+      }
+    } else if (
+      result.error?.status === 204 ||
+      result.meta?.response?.status === 204
+    ) {
+      return { data: null };
     }
 
     return {

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,9 +26,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${inter.variable} antialiased`}>
-          <div className="root-layout">
-            <Providers>{children}</Providers>
-          </div>
+          <Providers>
+            <div className="root-layout">{children}</div>
+            <Toaster richColors closeButton />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
