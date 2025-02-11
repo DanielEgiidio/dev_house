@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 const SignInComponent = () => {
   const { user } = useUser();
   const searchParams = useSearchParams();
-  const isCheckoutPage = searchParams.get("ShowSignUp") !== null;
+  const isCheckoutPage = searchParams.get("showSignUp") !== null;
   const courseId = searchParams.get("id");
 
   const signUpUrl = isCheckoutPage
@@ -40,7 +40,6 @@ const SignInComponent = () => {
             padding: "0rem 2.5rem",
             "& > div > div:nth-child(1)": {
               background: "#25262F",
-              display: "none",
             },
             ".cl-internal-1dauvpw": {
               display: "none",

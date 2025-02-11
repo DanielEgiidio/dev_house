@@ -32,7 +32,7 @@ const SelectedCourse = ({ course, handleEnrollNow }: SelectedCourseProps) => {
             onClick={() => handleEnrollNow(course.courseId)}
             className="bg-primary-700 hover:bg-primary-600"
           >
-            Enroll Now
+            Inscrever-se
           </Button>
         </div>
       </div>

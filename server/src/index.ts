@@ -15,6 +15,7 @@ import userClerkRoutes from "./routes/userClerkRoutes";
 /* ROUTES IMPORT */
 
 import courseRoutes from "./routes/courseRoutes";
+import transactionRoutes from "./routes/transactionRoutes";
 
 /* CONFIG */
 
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.use("/courses", courseRoutes);
 app.use("/users/clerk", requireAuth(), userClerkRoutes);
+app.use("/transactions", requireAuth(), transactionRoutes);
 
 /* SERVER */
 
