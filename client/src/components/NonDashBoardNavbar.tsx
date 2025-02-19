@@ -6,7 +6,7 @@ import { Bell, BookOpen } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const NonDashBoardNavbar = () => {
+const NonDashboardNavbar = () => {
   const { user } = useUser();
   const userRole = user?.publicMetadata?.userType as "student" | "teacher";
 
@@ -83,4 +83,4 @@ const NonDashBoardNavbar = () => {
   );
 };
 
-export default NonDashBoardNavbar;
+export default NonDashboardNavbar;

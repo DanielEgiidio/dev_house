@@ -31,10 +31,16 @@ const PaymentPageContent = () => {
       return;
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
+      ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
+      : process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : undefined;
+
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`,
+        return_url: `${baseUrl}/checkout?step=3&id=${courseId}`,
       },
       redirect: "if_required",
     });
@@ -77,16 +83,16 @@ const PaymentPageContent = () => {
             <div className="payment__content">
               <h1 className="payment__title">Checkout</h1>
               <p className="payment__subtitle">
-                Preencha todos os campos abaixo para realizar sua compra.
+                Fill out the payment details below to complete your purchase.
               </p>
 
               <div className="payment__method">
-                <h3 className="payment__method-title">Métodos de pagamento.</h3>
+                <h3 className="payment__method-title">Payment Method</h3>
 
                 <div className="payment__card-container">
                   <div className="payment__card-header">
                     <CreditCard size={24} />
-                    <span>Cartão de crédito/Cartão de débito</span>
+                    <span>Credit/Debit Card</span>
                   </div>
                   <div className="payment__card-element">
                     <PaymentElement />
@@ -106,7 +112,7 @@ const PaymentPageContent = () => {
           variant="outline"
           type="button"
         >
-          Trocar de conta
+          Switch Account
         </Button>
 
         <Button
@@ -115,7 +121,7 @@ const PaymentPageContent = () => {
           className="payment__submit"
           disabled={!stripe || !elements}
         >
-          Pagar com cartão de crédio
+          Pay with Credit Card
         </Button>
       </div>
     </div>

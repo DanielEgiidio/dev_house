@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Convert cents to formatted currency string (e.g., 4999 -> "$49.99")
+// Converte centavos para uma string formatada em BRL (e.g., 4999 -> "R$49,99")
 export function formatPrice(cents: number | undefined): string {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -16,22 +16,23 @@ export function formatPrice(cents: number | undefined): string {
   }).format((cents || 0) / 100);
 }
 
-// Convert dollars to cents (e.g., "49.99" -> 4999)
-export function dollarsToCents(dollars: string | number): number {
-  const amount = typeof dollars === "string" ? parseFloat(dollars) : dollars;
+// Converte reais para centavos (e.g., "49.99" -> 4999)
+export function reaisToCents(reais: string | number): number {
+  const amount =
+    typeof reais === "string" ? parseFloat(reais.replace(",", ".")) : reais;
   return Math.round(amount * 100);
 }
 
-// Convert cents to dollars (e.g., 4999 -> "49.99")
-export function centsToDollars(cents: number | undefined): string {
-  return ((cents || 0) / 100).toString();
+// Converte centavos para reais (e.g., 4999 -> "49,99")
+export function centsToReais(cents: number | undefined): string {
+  return ((cents || 0) / 100).toFixed(2).replace(".", ",");
 }
 
-// Zod schema for price input (converts dollar input to cents)
+// Zod schema para entrada de preço (converte reais para centavos)
 export const priceSchema = z.string().transform((val) => {
-  const dollars = parseFloat(val);
-  if (isNaN(dollars)) return "0";
-  return dollarsToCents(dollars).toString();
+  const reais = parseFloat(val.replace(",", "."));
+  if (isNaN(reais)) return "0";
+  return reaisToCents(reais).toString();
 });
 
 export const countries = [

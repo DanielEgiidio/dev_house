@@ -1,23 +1,20 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
+import { Elements } from "@stripe/react-stripe-js";
 import {
   Appearance,
   loadStripe,
-  StripeElement,
   StripeElementsOptions,
 } from "@stripe/stripe-js";
 import { useCreateStripePaymentIntentMutation } from "@/state/api";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
 import Loading from "@/components/Loading";
 
-import { Elements } from "@stripe/react-stripe-js";
-
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
-  throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
+  throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not set");
 }
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+
 const appearance: Appearance = {
   theme: "stripe",
   variables: {
@@ -42,7 +39,7 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
     if (!course) return;
     const fetchPaymentIntent = async () => {
       const result = await createStripePaymentIntent({
-        amount: course?.price ?? 99999999999,
+        amount: course?.price ?? 9999999999999,
       }).unwrap();
 
       setClientSecret(result.clientSecret);
@@ -55,10 +52,11 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
     clientSecret,
     appearance,
   };
+
   if (!clientSecret) return <Loading />;
 
   return (
-    <Elements stripe={stripePromise} options={options}>
+    <Elements stripe={stripePromise} options={options} key={clientSecret}>
       {children}
     </Elements>
   );

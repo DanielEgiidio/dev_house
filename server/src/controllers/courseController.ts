@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import Course from "../models/courseModel";
+import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { getAuth } from "@clerk/express";
+
+const s3 = new AWS.S3();
 
 export const listCourses = async (
   req: Request,
@@ -13,9 +16,9 @@ export const listCourses = async (
       category && category !== "all"
         ? await Course.scan("category").eq(category).exec()
         : await Course.scan().exec();
-    res.json({ message: "Courses retrieved successfully", data: courses });
+    res.json({ message: "Cursos recuperados com sucesso", data: courses });
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving courses", error });
+    res.status(500).json({ message: "Error ao recuperar cursos", error });
   }
 };
 
@@ -24,13 +27,13 @@ export const getCourse = async (req: Request, res: Response): Promise<void> => {
   try {
     const course = await Course.get(courseId);
     if (!course) {
-      res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Curso não encontrado" });
       return;
     }
 
-    res.json({ message: "Course retrieved successfully", data: course });
+    res.json({ message: "Cursos recuperados com sucesso", data: course });
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving course", error });
+    res.status(500).json({ message: "Error ao recuperar cursos", error });
   }
 };
 
@@ -42,7 +45,9 @@ export const createCourse = async (
     const { teacherId, teacherName } = req.body;
 
     if (!teacherId || !teacherName) {
-      res.status(400).json({ message: "Missing teacherId or teacherName" });
+      res
+        .status(400)
+        .json({ message: "O ID e o nome do professor são obrigatórios" });
       return;
     }
 
@@ -50,9 +55,9 @@ export const createCourse = async (
       courseId: uuidv4(),
       teacherId,
       teacherName,
-      title: "Untitled Course",
+      title: "Curso sem título",
       description: "",
-      category: "Uncategorized",
+      category: "Sem categoria",
       image: "",
       price: 0,
       level: "Beginner",
@@ -60,12 +65,11 @@ export const createCourse = async (
       sections: [],
       enrollments: [],
     });
-
     await newCourse.save();
 
-    res.json({ message: "Course created successfully", data: newCourse });
+    res.json({ message: "Curso criado com sucesso", data: newCourse });
   } catch (error) {
-    res.status(500).json({ message: "Error creating course", error });
+    res.status(500).json({ message: "Error ao criar curso", error });
   }
 };
 
@@ -79,30 +83,27 @@ export const updateCourse = async (
 
   try {
     const course = await Course.get(courseId);
-
     if (!course) {
-      res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Curso não encontrado" });
       return;
     }
 
     if (course.teacherId !== userId) {
       res
-        .status(401)
-        .json({ message: "Not authorized to update this course " });
+        .status(403)
+        .json({ message: "Não autorizado a atualizar este curso" });
       return;
     }
 
     if (updateData.price) {
       const price = parseInt(updateData.price);
-
       if (isNaN(price)) {
         res.status(400).json({
-          message: "Invalid price format",
-          error: "Price must be a number",
+          message: "Formato de preço inválido",
+          error: "O preço deve ter um valor numérico",
         });
         return;
       }
-
       updateData.price = price * 100;
     }
 
@@ -124,9 +125,10 @@ export const updateCourse = async (
 
     Object.assign(course, updateData);
     await course.save();
-    res.json({ message: "Course updated successfully", data: course });
+
+    res.json({ message: "Curso atualizado com sucesso", data: course });
   } catch (error) {
-    res.status(500).json({ message: "Error updating course", error });
+    res.status(500).json({ message: "Error ao atualizar curso", error });
   }
 };
 
@@ -139,23 +141,56 @@ export const deleteCourse = async (
 
   try {
     const course = await Course.get(courseId);
-
     if (!course) {
-      res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Curso não encontrado" });
       return;
     }
 
     if (course.teacherId !== userId) {
-      res
-        .status(401)
-        .json({ message: "Not authorized to update this course " });
+      res.status(403).json({ message: "Não autorizado a excluir este curso" });
       return;
     }
 
     await Course.delete(courseId);
 
-    res.json({ message: "Course deleted successfully" });
+    res.json({ message: "Curso deletado com sucesso", data: course });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting course", error });
+    res.status(500).json({ message: "Error ao deletar curso", error });
+  }
+};
+
+export const getUploadVideoUrl = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { fileName, fileType } = req.body;
+
+  if (!fileName || !fileType) {
+    res
+      .status(400)
+      .json({ message: "Nome e tipo de arquivo são obrigatórios" });
+    return;
+  }
+
+  try {
+    const uniqueId = uuidv4();
+    const s3Key = `videos/${uniqueId}/${fileName}`;
+
+    const s3Params = {
+      Bucket: process.env.S3_BUCKET_NAME || "",
+      Key: s3Key,
+      Expires: 60,
+      ContentType: fileType,
+    };
+
+    const uploadUrl = s3.getSignedUrl("putObject", s3Params);
+    const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
+
+    res.json({
+      message: "URL de upload gerada com sucesso",
+      data: { uploadUrl, videoUrl },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao gerar URL de upload", error });
   }
 };

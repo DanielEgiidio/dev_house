@@ -23,8 +23,8 @@ const CheckoutWizard = () => {
         return <PaymentPage />;
       case 3:
         return <CompletionPage />;
-      case 4:
-        return "checkout details page";
+      default:
+        return <CheckoutDetailsPage />;
     }
   };
 

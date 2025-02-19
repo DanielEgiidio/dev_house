@@ -1,11 +1,11 @@
 "use client";
 
-import CourseCardSearch from "@/components/CourseCardSearch";
 import Loading from "@/components/Loading";
 import { useGetCoursesQuery } from "@/state/api";
-import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import CourseCardSearch from "@/components/CourseCardSearch";
 import SelectedCourse from "./SelectedCourse";
 
 const Search = () => {
@@ -49,8 +49,8 @@ const Search = () => {
       transition={{ duration: 0.5 }}
       className="search"
     >
-      <h1 className="search__title">Lista de cursos disponíveis</h1>
-      <h2 className="search__subtitle">{courses.length} Cursos disponíveis</h2>
+      <h1 className="search__title">List of available courses</h1>
+      <h2 className="search__subtitle">{courses.length} courses avaiable</h2>
       <div className="search__content">
         <motion.div
           initial={{ y: 40, opacity: 0 }}
