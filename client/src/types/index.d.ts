@@ -84,6 +84,7 @@ declare global {
   interface CourseCardProps {
     course: Course;
     onGoToCourse: (course: Course) => void;
+    className?: string;
   }
 
   interface TeacherCourseCardProps {

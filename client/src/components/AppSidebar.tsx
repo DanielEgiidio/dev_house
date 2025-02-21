@@ -23,7 +23,6 @@ import {
   User,
 } from "lucide-react";
 import Loading from "./Loading";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -31,7 +30,9 @@ const AppSidebar = () => {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const pathname = usePathname();
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, state } = useSidebar();
+
+  const isCollapsed = state === "collapsed";
 
   const navLinks = {
     student: [
@@ -69,15 +70,10 @@ const AppSidebar = () => {
               className="group hover:bg-customgreys-secondarybg"
             >
               <div className="app-sidebar__logo-container group">
-                <div className="app-sidebar__logo-wrapper">
-                  <Image
-                    src="/logo.svg"
-                    alt="Dev House Logo"
-                    width={40}
-                    height={40}
-                    className="app-sidebar__logo"
-                  />
-                  <p className="app-sidebar__title">Dev House</p>
+                <div className={cn("app-sidebar__logo")}>
+                  <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-bold  text-lg sm:text-xl hover:text-opacity-10">
+                    {isCollapsed ? "</>" : "<Dev House/> "}
+                  </span>
                 </div>
                 <PanelLeft className="app-sidebar__collapse-icon" />
               </div>

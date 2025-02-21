@@ -2,7 +2,8 @@
 
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { Bell, BookOpen } from "lucide-react";
+import { motion } from "framer-motion";
+import { Bell, BookOpen, Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -16,11 +17,16 @@ const NonDashboardNavbar = () => {
   );
 
   return (
-    <nav className="nondashboard-navbar">
+    <motion.nav
+      className="nondashboard-navbar"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="nondashboard-navbar__container">
         <div className="nondashboard-navbar__search">
-          <Link href="/" className="nondashboard-navbar__brand">
-            Dev House
+          <Link href="/" className="nondashboard-navbar__brand ">
+            &lt;Dev House /&gt;
           </Link>
 
           <div className="flex items-center gap-4">
@@ -30,12 +36,9 @@ const NonDashboardNavbar = () => {
                 className="nondashboard-navbar__search-input"
               >
                 <span className="hidden md:inline">Pesquisar por Cursos</span>
-                <span className="sm:hidden">Pesquisar</span>
+                <span className="sm:hidden ">Pesquisar</span>
               </Link>
-              <BookOpen
-                className="nondashboard-navbar__search-icon"
-                size-={18}
-              />
+              <Search className="nondashboard-navbar__search-icon" size-={18} />
             </div>
           </div>
         </div>
@@ -50,9 +53,12 @@ const NonDashboardNavbar = () => {
               appearance={{
                 baseTheme: dark,
                 elements: {
-                  userButtonOuterIdentifier: "text-customgreys-dirtyGrey",
-                  userButtonBox: "scale-90 sm:scale-100",
+                  userButtonOuterIdentifier:
+                    "text-customgreys-dirtyGrey text-sm hidden md:inline",
+                  userButtonBox: "scale-90 sm:scale-110",
                   userButtonPopoverFooter: "hidden",
+                  userButtonAvatarBox: "w-10 h-10",
+                  userButtonAvatarImage: "w-10 h-10",
                 },
               }}
               showName={true}
@@ -79,7 +85,7 @@ const NonDashboardNavbar = () => {
           </SignedOut>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

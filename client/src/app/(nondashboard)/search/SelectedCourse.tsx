@@ -9,7 +9,7 @@ const SelectedCourse = ({ course, handleEnrollNow }: SelectedCourseProps) => {
       <div>
         <h3 className="selected-course__title">{course.title}</h3>
         <p className="selected-course__author">
-          By {course.teacherName} |{" "}
+          Por {course.teacherName} |{" "}
           <span className="selected-course__enrollment-count">
             {course?.enrollments?.length}
           </span>
@@ -20,7 +20,7 @@ const SelectedCourse = ({ course, handleEnrollNow }: SelectedCourseProps) => {
         <p className="selected-course__description">{course.description}</p>
 
         <div className="selected-course__sections">
-          <h4 className="selected-course__sections-title">Course Content</h4>
+          <h4 className="selected-course__sections-title">Conteúdo do curso</h4>
           <AccordionSections sections={course.sections} />
         </div>
 
@@ -30,9 +30,9 @@ const SelectedCourse = ({ course, handleEnrollNow }: SelectedCourseProps) => {
           </span>
           <Button
             onClick={() => handleEnrollNow(course.courseId)}
-            className="bg-primary-700 hover:bg-primary-600"
+            className=" bg-[#7916ff] text-white text-base font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:bg-[#6b04fd] active:bg-[#6b04fd] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 w-full sm:w-auto"
           >
-            Enroll Now
+            Matricular
           </Button>
         </div>
       </div>

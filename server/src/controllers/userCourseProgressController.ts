@@ -13,7 +13,7 @@ export const getUserEnrolledCourses = async (
   const auth = getAuth(req);
 
   if (!auth || auth.userId !== userId) {
-    res.status(403).json({ message: "Access denied" });
+    res.status(403).json({ message: "Acesso negado" });
     return;
   }
 
@@ -24,13 +24,13 @@ export const getUserEnrolledCourses = async (
     const courseIds = enrolledCourses.map((item: any) => item.courseId);
     const courses = await Course.batchGet(courseIds);
     res.json({
-      message: "Enrolled courses retrieved successfully",
+      message: "Cursos matriculados recuperados com sucesso",
       data: courses,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error retrieving enrolled courses", error });
+      .json({ message: "Erro ao recuperar cursos inscritos", error });
   }
 };
 
@@ -45,17 +45,22 @@ export const getUserCourseProgress = async (
     if (!progress) {
       res
         .status(404)
-        .json({ message: "Course progress not found for this user" });
+        .json({
+          message: "Progresso do curso não encontrado para este usuário",
+        });
       return;
     }
     res.json({
-      message: "Course progress retrieved successfully",
+      message: "Progresso do curso recuperado com sucesso",
       data: progress,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error retrieving user course progress", error });
+      .json({
+        message: "Erro ao recuperar o progresso do curso do usuário",
+        error,
+      });
   }
 };
 
@@ -96,9 +101,9 @@ export const updateUserCourseProgress = async (
       data: progress,
     });
   } catch (error) {
-    console.error("Error updating progress:", error);
+    console.error("Erro ao atualizar o progresso:", error);
     res.status(500).json({
-      message: "Error updating user course progress",
+      message: "Erro ao atualizar o progresso do curso do usuário",
       error,
     });
   }

@@ -13,10 +13,11 @@ import Header from "./Header";
 import { Form } from "@/components/ui/form";
 import { CustomFormField } from "./CustomFormField";
 import { Button } from "@/components/ui/button";
+import { Bell, Mail, MessageSquare, Settings } from "lucide-react";
 
 const SharedNotificationSettings = ({
-  title = "Notification Settings",
-  subtitle = "Manage your notification settings",
+  title = "Configurações do Usuário",
+  subtitle = "Gerencie suas configurações de notificação",
 }: SharedNotificationSettingsProps) => {
   const { user } = useUser();
   const [updateUser] = useUpdateUserMutation();
@@ -55,47 +56,91 @@ const SharedNotificationSettings = ({
     }
   };
 
-  if (!user) return <div>Please sign in to manage your settings.</div>;
+  if (!user)
+    return <div>Por favor, faça login para gerenciar suas configurações.</div>;
 
   return (
-    <div className="notification-settings">
+    <div className="notification-settings bg-customgreys-primarybg p-8 rounded-xl border border-gray-800/50 shadow-lg">
       <Header title={title} subtitle={subtitle} />
+
       <Form {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="notification-settings__form"
+          className="notification-settings__form space-y-8"
         >
-          <div className="notification-settings__fields">
-            <CustomFormField
-              name="courseNotifications"
-              label="Notificações dos cursos"
-              type="switch"
-            />
-            <CustomFormField
-              name="emailAlerts"
-              label="Notificações via e-mail"
-              type="switch"
-            />
-            <CustomFormField
-              name="smsAlerts"
-              label="Notificações via SMS"
-              type="switch"
-            />
+          <div className="notification-settings__fields space-y-6">
+            {/* Notificações dos Cursos */}
+            <div className="bg-customgreys-secondarybg p-6 rounded-lg border border-gray-800/30">
+              <div className="flex items-center gap-4 mb-4">
+                <Bell className="w-6 h-6 text-purple-400" />
+                <h3 className="text-lg font-semibold text-white">
+                  Notificações dos Cursos
+                </h3>
+              </div>
+              <CustomFormField
+                name="courseNotifications"
+                label="Receber notificações sobre novos cursos e atualizações"
+                type="switch"
+              />
+            </div>
 
-            <CustomFormField
-              name="notificationFrequency"
-              label="Notification Frequency"
-              type="select"
-              options={[
-                { value: "immediate", label: "Imediatamente" },
-                { value: "daily", label: "Diariamente" },
-                { value: "weekly", label: "Semanalmente" },
-              ]}
-            />
+            {/* Notificações via E-mail */}
+            <div className="bg-customgreys-secondarybg p-6 rounded-lg border border-gray-800/30">
+              <div className="flex items-center gap-4 mb-4">
+                <Mail className="w-6 h-6 text-purple-400" />
+                <h3 className="text-lg font-semibold text-white">
+                  Notificações via E-mail
+                </h3>
+              </div>
+              <CustomFormField
+                name="emailAlerts"
+                label="Receber alertas importantes por e-mail"
+                type="switch"
+              />
+            </div>
+
+            {/* Notificações via SMS */}
+            <div className="bg-customgreys-secondarybg p-6 rounded-lg border border-gray-800/30">
+              <div className="flex items-center gap-4 mb-4">
+                <MessageSquare className="w-6 h-6 text-purple-400" />
+                <h3 className="text-lg font-semibold text-white">
+                  Notificações via SMS
+                </h3>
+              </div>
+              <CustomFormField
+                name="smsAlerts"
+                label="Receber alertas urgentes por SMS"
+                type="switch"
+              />
+            </div>
+
+            {/* Frequência das Notificações */}
+            <div className="bg-customgreys-secondarybg p-6 rounded-lg border border-gray-800/30">
+              <div className="flex items-center gap-4 mb-4">
+                <Settings className="w-6 h-6 text-purple-400" />
+                <h3 className="text-lg font-semibold text-white">
+                  Frequência das Notificações
+                </h3>
+              </div>
+              <CustomFormField
+                name="notificationFrequency"
+                label="Escolha a frequência das notificações"
+                type="select"
+                options={[
+                  { value: "immediate", label: "Imediatamente" },
+                  { value: "daily", label: "Diariamente" },
+                  { value: "weekly", label: "Semanalmente" },
+                ]}
+              />
+            </div>
           </div>
 
-          <Button type="submit" className="notification-settings__submit">
-            Atualizar Configurações de Notificação
+          {/* Botão de Envio */}
+          <Button
+            type="submit"
+            className="w-[250px] bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-5 rounded-xl transition-all"
+          >
+            Atualizar Configurações
           </Button>
         </form>
       </Form>
