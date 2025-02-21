@@ -6,6 +6,7 @@ import Providers from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import { ptBR } from "@clerk/localizations";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,7 +30,9 @@ export default function RootLayout({
         <html lang="en">
           <body className={`${inter.variable} antialiased`}>
             <Providers>
-              <div className="root-layout">{children}</div>
+              <Suspense fallback={null}>
+                <div className="root-layout">{children}</div>
+              </Suspense>
               <Toaster richColors closeButton />
             </Providers>
           </body>

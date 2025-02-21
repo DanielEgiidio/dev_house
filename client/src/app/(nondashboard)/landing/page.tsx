@@ -143,7 +143,10 @@ const Landing = () => {
   };
 
   const handleCourseClick = (courseId: string) => {
-    router.push(`/search?id=${courseId}`);
+    router.push(`/search?id=${courseId}`),
+      {
+        scroll: false,
+      };
   };
 
   if (isLoading) return <LoadingSkeleton />;
@@ -169,7 +172,7 @@ const Landing = () => {
             recentes tecnologias de desenvolvimento.
           </p>
           <div className="landing__cta">
-            <Link href="/search">
+            <Link href="/search" scroll={false}>
               <div className="landing__cta-button">Pesquisar por cursos</div>
             </Link>
           </div>
@@ -281,7 +284,9 @@ const Landing = () => {
                     variant="ghost"
                     className="text-purple-300 hover:text-white hover:bg-purple-500/10 px-4 py-2 rounded-lg transition-colors"
                   >
-                    <Link href="/search">Explorar</Link>
+                    <Link href="/search" scroll={false}>
+                      Explorar
+                    </Link>
                     <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>

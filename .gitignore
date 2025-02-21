@@ -1,6 +1,8 @@
 # Dependências do Node.js
 node_modules/
 
+
+
 # Logs
 *.log
 
@@ -10,3 +12,24 @@ node_modules/
 # Diretórios de saída
 dist/
 build/
+
+**/node_modules/
+**/dist/
+
+.env
+client/.env.local
+client/.env.development
+client/.env.production
+server/.env
+
+client/.next/
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+
+server/shared-local-instance.db
+server/dynamodb-local-metadata.json
+shared-local-instance.db
+dynamodb-local-metadata.json

@@ -101,7 +101,11 @@ const AppSidebar = () => {
                     !isActive && "text-customgreys-dirtyGrey"
                   )}
                 >
-                  <Link href={link.href} className="app-sidebar__navbar-link">
+                  <Link
+                    href={link.href}
+                    scroll={false}
+                    className="app-sidebar__navbar-link"
+                  >
                     <link.icon
                       className={isActive ? "text-white-50" : "text-gray-500"}
                     />

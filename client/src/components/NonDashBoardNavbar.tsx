@@ -25,7 +25,7 @@ const NonDashboardNavbar = () => {
     >
       <div className="nondashboard-navbar__container">
         <div className="nondashboard-navbar__search">
-          <Link href="/" className="nondashboard-navbar__brand ">
+          <Link href="/" scroll={false} className="nondashboard-navbar__brand ">
             &lt;Dev House /&gt;
           </Link>
 
@@ -33,6 +33,7 @@ const NonDashboardNavbar = () => {
             <div className="relative group">
               <Link
                 href="/search"
+                scroll={false}
                 className="nondashboard-navbar__search-input"
               >
                 <span className="hidden md:inline">Pesquisar por Cursos</span>
@@ -72,11 +73,13 @@ const NonDashboardNavbar = () => {
           <SignedOut>
             <Link
               href="/signin"
+              scroll={false}
               className="nondashboard-navbar__auth-button--login"
             >
               Login
             </Link>
             <Link
+              scroll={false}
               href="/signup"
               className="nondashboard-navbar__auth-button--signup"
             >
